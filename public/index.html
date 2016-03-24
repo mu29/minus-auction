@@ -38,23 +38,54 @@
         </div>
         <!-- 방 목록 -->
         <div class="room-list">
+            111
         </div>
         <!-- 게임 화면 -->
-        <div class="game-screen">
+        <div class="game">
         </div>
     </body>
 
     <script type="text/babel">
         var socket = io();
+        var token = "";
 
         var registerHandler = () => {
             socket.on("join", (packet) => {
                 console.log(packet.success);
+                if (packet.success) {
+                    token = packet.token;
+                    showRoomList();
+                }
             });
+        }
+
+        var showLogin = () => {
+            $(".join").show();
+            $(".room-list").hide();
+            $(".game").hide();
+        }
+
+        var showRoomList = () => {
+            $(".join").hide();
+            $(".room-list").show();
+            $(".game").hide();
+        }
+
+        var showGame = () => {
+            $(".join").hide();
+            $(".room-list").hide();
+            $(".game").show();
+        }
+
+        var send = (header, packet) => {
+            packet.token = token;
+            socket.emit(header, packet);
         }
 
         $(document).ready(() => {
             registerHandler();
+            showLogin();
+
             // 접속
             $("#btn-join").click(() => {
                 socket.emit("join", {
