@@ -1,0 +1,20 @@
+{
+  "development" : {
+    "username" : "root",
+    "password" : "projectDanbi",
+    "database" : "minus-auction",
+    "host" : "localhost",
+    "port" : 5432,
+    "server_port": 3001,
+    "dialect" : "mysql"
+  },
+  "production" : {
+    "username" : "root",
+    "password" : "",
+    "database" : "minus-auction",
+    "host" : "localhost",
+    "port" : 5432,
+    "server_port": 3001,
+    "dialect" : "mysql"
+  }
+}
