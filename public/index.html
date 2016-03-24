@@ -12,14 +12,28 @@
         <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <!-- socket.io -->
         <script src="//cdn.socket.io/socket.io-1.3.7.js"></script>
+        <link rel="stylesheet" href="./css/style.css">
     </head>
 
     <body>
         <!-- 접속 화면 -->
         <div class="join">
-            <input type="text" value="pedaling@pedaling.me" class="input-box input-username"/>
-            <input type="password" class="input-box input-password"/>
-            <input type="button" value="접속하기" class="btn btn-login"/>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h3 class="panel-title">더 지니어스 : 마이너스 경매</h3>
+              </div>
+                <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="닉네임" id="txt-name">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="비밀번호" id="txt-pass" >
+                        </div>
+                        <input type="button" value="접속하기" class="btn btn-default" id="btn-join"/>
+                    </form>
+                </div>
+            </div>
         </div>
         <!-- 방 목록 -->
         <div class="room-list">
@@ -34,6 +48,17 @@
         socket.on('news', function (data) {
             console.log(data);
             socket.emit('my other event', { my: 'data' });
+        });
+
+
+        $(document).ready(() => {
+            // 접속
+            $("#btn-join").click() => {
+                socket.emit("join", {
+                    name : $("#txt-name").val().trim(),
+                    password : $("#txt-pass").val().trim()
+                });
+            }
         });
     </script>
 </html>
