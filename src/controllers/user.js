@@ -6,7 +6,7 @@ function UserController() {
     var Models = require("../models/define.js");
     var User = Models.User;
 
-    self.login = function(name, password, callback) {
+    self.login = (name, password, callback) => {
         // 아이디, 비번 체크
         if (name === "" || password === "") {
             callback(null);
@@ -26,7 +26,7 @@ function UserController() {
         });
     };
 
-    self.register = function(name, password, callback) {
+    self.register = (name, password, callback) => {
         User.build({ name: name, password: password }).save()
         .then((user) => {
             user === undefined ? callback(null) : callback(user);
@@ -37,7 +37,7 @@ function UserController() {
         });
     };
 
-    self.registerHandler = function(socket) {
+    self.registerHandler = (socket) => {
         socket.on("join", (packet) => {
             self.login(packet.name, packet.password, (user) => {
                 var success = user !== null;
@@ -48,5 +48,5 @@ function UserController() {
                 socket.emit("join", { success: success, token: token });
             });
         });
-    }
+    };
 }
