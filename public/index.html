@@ -5,14 +5,15 @@
         <title>더 지니어스 : 마이너스 경매</title>
         <!-- 모바일 -->
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <!-- socket.io -->
         <script src="//cdn.socket.io/socket.io-1.3.7.js"></script>
         <link rel="stylesheet" href="./css/style.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
     </head>
 
     <body>
@@ -43,22 +44,24 @@
         </div>
     </body>
 
-    <script>
+    <script type="text/babel">
         var socket = io();
-        socket.on('news', function (data) {
-            console.log(data);
-            socket.emit('my other event', { my: 'data' });
-        });
 
+        var registerHandler = () => {
+            socket.on("join", (packet) => {
+                console.log(packet.success);
+            });
+        }
 
         $(document).ready(() => {
+            registerHandler();
             // 접속
-            $("#btn-join").click() => {
+            $("#btn-join").click(() => {
                 socket.emit("join", {
                     name : $("#txt-name").val().trim(),
                     password : $("#txt-pass").val().trim()
                 });
-            }
+            });
         });
     </script>
 </html>
