@@ -41,7 +41,11 @@ function UserController() {
         socket.on("join", (packet) => {
             self.login(packet.name, packet.password, (user) => {
                 var success = user !== null;
-                socket.emit("join", { success: success });
+                if (success) {
+                    var token = user.name + "mm";
+                    global.users[token] = user;
+                }
+                socket.emit("join", { success: success, token: token });
             });
         });
     }

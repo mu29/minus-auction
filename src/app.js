@@ -13,11 +13,12 @@ var controllers = require("./controller");
 
 global.sio = require('socket.io').listen(server);
 global.logger = new logger('info');
+global.users = [];
+global.rooms = [];
 
 app.use("/css", express.static(__dirname + './../public/css'));
 app.use("/js", express.static(__dirname + './../public/js'));
 app.use("/", express.static(__dirname + './../public'));
-
 
 server.listen(port, function() {
     global.logger.info("server is running. PORT:" + port);
