@@ -20,18 +20,17 @@ app.use("/", express.static(__dirname + './../public'));
 
 
 server.listen(port, function() {
-  global.logger.info("server is running. PORT:" + port);
+    global.logger.info("server is running. PORT:" + port);
 });
 
-
 global.sio.on('connection', (socket) => {
-  global.logger.info("접속함");
-  controllers.map((controller) => {
-    controller.registerHandler(socket);
-  });
-  socket.on('disconnect', (socket) => {
-    global.logger.info("끊어짐");
-  });
+    global.logger.info("접속함");
+    controllers.map((controller) => {
+        controller.registerHandler(socket);
+    });
+    socket.on('disconnect', (socket) => {
+        global.logger.info("끊어짐");
+    });
 });
 
 module.exports = app;

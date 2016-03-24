@@ -6,10 +6,16 @@ function UserController() {
     var Models = require("../models/define.js");
     var User = Models.User;
 
-    self.join = function(name, password, callback) {
+    self.login = function(name, password, callback) {
+        // 아이디, 비번 체크
+        if (name === "" || password === "") {
+            callback(null);
+            return;
+        }
+
         User.findOne({ where: { name: name } }).then((user) => {
             if (user == undefined) {
-                register(name, password, callback);
+                self.register(name, password, callback);
                 return;
             }
             user.password === password ? callback(user) : callback(null);
@@ -21,7 +27,8 @@ function UserController() {
     };
 
     self.register = function(name, password, callback) {
-        User.insert({ name: name, password: password }).then((user) => {
+        User.build({ name: name, password: password }).save()
+        .then((user) => {
             user === undefined ? callback(null) : callback(user);
         })
         .catch((err) => {
@@ -31,6 +38,11 @@ function UserController() {
     };
 
     self.registerHandler = function(socket) {
-        
+        socket.on("join", (packet) => {
+            self.login(packet.name, packet.password, (user) => {
+                var success = user !== null;
+                socket.emit("join", { success: success });
+            });
+        });
     }
 }
