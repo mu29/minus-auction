@@ -43,6 +43,7 @@ function UserController() {
                 var success = user !== null;
                 if (success) {
                     var token = user.name + "mm";
+                    user.token = token;
                     global.users[token] = user;
                 }
                 socket.emit("join", { success: success, token: token });

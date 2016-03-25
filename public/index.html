@@ -38,7 +38,18 @@
         </div>
         <!-- 방 목록 -->
         <div class="room-list">
-            111
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">더 지니어스 : 마이너스 경매</h3>
+                </div>
+                <table class="table table-hover">
+                    <tr>
+                        <th>#</th>
+                        <th>방 이름</th>
+                        <th>인원 수</th>
+                    </tr>
+                </table>
+            </div>
         </div>
         <!-- 게임 화면 -->
         <div class="game">
@@ -50,12 +61,19 @@
         var token = "";
 
         var registerHandler = () => {
+            // 로그인
             socket.on("join", (packet) => {
                 console.log(packet.success);
                 if (packet.success) {
                     token = packet.token;
                     showRoomList();
+                } else {
+                    alert("이미 사용중인 아이디입니다.");
                 }
+            });
+            // 방 목록 받아오기
+            socket.on("room_list", (packet) => {
+                console.log(packet.rooms);
             });
         }
 
@@ -69,6 +87,7 @@
             $(".join").hide();
             $(".room-list").show();
             $(".game").hide();
+            socket.emit("room_list", { token: token });
         }
 
         var showGame = () => {
