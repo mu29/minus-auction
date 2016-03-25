@@ -5,7 +5,8 @@ function RoomController() {
 
     self.createRoom = (user, callback) => {
         // 방 만들기
-        room.name = user.name;
+        var room = {};
+        room.name = user.name + "의 게임";
         room.start = false;
         room.users = [];
         room.users.push(user);
@@ -33,15 +34,17 @@ function RoomController() {
 
     self.registerHandler = (socket) => {
         socket.on("room_list", (packet) => {
-            global.logger.info("방 목록");
             if (!self.isJoined(packet.token)) {
                 return;
             }
-            global.logger.info("히익");
             var roomList = [];
-            for (room in global.rooms) {
-                roomList.push(room.name);
+            for (var roomName in global.rooms) {
+                roomList.push({
+                    name: global.rooms[roomName].name,
+                    start: global.rooms[roomName].start
+                });
             }
+            global.logger.info(global.rooms);
             global.logger.info(roomList);
             socket.emit("room_list", { rooms: roomList });
         });
